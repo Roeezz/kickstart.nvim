@@ -86,6 +86,8 @@ I hope you enjoy your Neovim journey,
 P.S. You can delete this when you're done too. It's your config now! :)
 --]]
 
+require 'more'
+
 --NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
@@ -99,20 +101,6 @@ vim.g.have_nerd_font = true
 -- See `:help vim.opt`
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
-
--- Set the default shell used by nvim to be powershell
-vim.opt.shell = 'pwsh'
-
-vim.o.shellcmdflag =
-  '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;Remove-Alias -Force -ErrorAction SilentlyContinue tee;$PSStyle.OutputRendering = [System.Management.Automation.OutputRendering]::PlainText;'
-
-vim.o.shellredir = '2>&1 | %%{ "$_" } | Out-File %s; exit $LastExitCode'
-
-vim.o.shellpipe = '2>&1 | %%{ "$_" } | tee %s; exit $LastExitCode'
-
-vim.o.shellquote = ''
-
-vim.o.shellxquote = ''
 
 -- Make line numbers default
 vim.opt.number = true
@@ -206,8 +194,6 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
-require 'more.remap'
-
 vim.keymap.set('n', '<CR>', '@="m`o<C-V><Esc>``"<CR>', { desc = 'Add blank line under cursor without moving it' })
 vim.keymap.set('n', '<S-CR>', '@="m`O<C-V><Esc>``"<CR>', { desc = 'Add blank line above cursor without moving it' })
 
@@ -278,7 +264,6 @@ require('lazy').setup({
 
   'ThePrimeagen/vim-be-good',
 
-  { 'L3MON4D3/LuaSnip', run = 'make install_jsregexp' },
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
   -- keys can be used to configure plugin behavior/loading/etc.
@@ -635,6 +620,7 @@ require('lazy').setup({
         -- But for many setups, the LSP (`tsserver`) will work just fine
         -- tsserver = {},
         --
+        powershell_es = {},
 
         lua_ls = {
           -- cmd = {...},
