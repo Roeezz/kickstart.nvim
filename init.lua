@@ -595,7 +595,6 @@ require('lazy').setup({
         -- But for many setups, the LSP (`tsserver`) will work just fine
         -- tsserver = {},
         --
-        powershell_es = {},
 
         lua_ls = {
           -- cmd = {...},
