@@ -86,8 +86,6 @@ I hope you enjoy your Neovim journey,
 P.S. You can delete this when you're done too. It's your config now! :)
 --]]
 
-require 'more'
-
 --NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
@@ -101,6 +99,8 @@ vim.g.have_nerd_font = true
 -- See `:help vim.opt`
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
+
+require 'more.shell_opt'
 
 -- Make line numbers default
 vim.opt.number = true
@@ -164,6 +164,8 @@ vim.opt.scrolloff = 10
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
+require 'more.remap'
+
 -- Clear highlights on search when pressing <Esc> in normal mode
 --  See `:help hlsearch`
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
@@ -196,30 +198,6 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 
 vim.keymap.set('n', '<CR>', '@="m`o<C-V><Esc>``"<CR>', { desc = 'Add blank line under cursor without moving it' })
 vim.keymap.set('n', '<S-CR>', '@="m`O<C-V><Esc>``"<CR>', { desc = 'Add blank line above cursor without moving it' })
-
--- allow to jump after quote pair with C-l
-function EscapePair()
-  local closers = { ')', ']', '}', '>', "'", '"', '`', ',' }
-  local line = vim.api.nvim_get_current_line()
-  local row, col = unpack(vim.api.nvim_win_get_cursor(0))
-  local after = line:sub(col + 1, -1)
-  local closer_col = #after + 1
-  local closer_i = nil
-  for i, closer in ipairs(closers) do
-    local cur_index, _ = after:find(closer)
-    if cur_index and (cur_index < closer_col) then
-      closer_col = cur_index
-      closer_i = i
-    end
-  end
-  if closer_i then
-    vim.api.nvim_win_set_cursor(0, { row, col + closer_col })
-  else
-    vim.api.nvim_win_set_cursor(0, { row, col + 1 })
-  end
-end
-
-vim.api.nvim_set_keymap('i', '<C-l>', '<cmd>lua EscapePair()<CR>', { noremap = true, silent = true })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -261,8 +239,6 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
-
-  'ThePrimeagen/vim-be-good',
 
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
