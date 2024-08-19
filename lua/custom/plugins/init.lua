@@ -9,7 +9,7 @@ return {
     opts = {},
     config = function()
       require('virt-column').setup {
-        virtcolumn = '80',
+        virtcolumn = '120',
       }
     end,
   },
